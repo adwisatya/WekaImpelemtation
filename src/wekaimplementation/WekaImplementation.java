@@ -77,7 +77,9 @@ public class WekaImplementation {
  
 		Instances data = new Instances(datafile);
 		data.setClassIndex(data.numAttributes() - 1);
- 
+		//Menampilkan summary dari data
+		System.out.println(data.toSummaryString());
+		
 		// Do 10-split cross validation
 		Instances[][] split = crossValidationSplit(data, 10);
  
@@ -97,12 +99,17 @@ public class WekaImplementation {
 		};
  
 		// Run for each model
-		for (int j = 0; j < models.length; j++) {
+		for (int j = 0; j < 1; j++) {
  			FastVector predictions = new FastVector();
  			for (int i = 0; i < trainingSplits.length; i++) {
 				Evaluation validation = classify(models[j], trainingSplits[i], testingSplits[i]);
+				
+				//Menampilkan summary seperti di Weka GUI 
+				//System.out.println(validation.toSummaryString()); 
+				
 				predictions.appendElements(validation.predictions());
 			}
+			
  			double accuracy = calculateAccuracy(predictions);
 			System.out.println("Accuracy of " + models[j].getClass().getSimpleName() + ": "
 					+ String.format("%.2f%%", accuracy)
